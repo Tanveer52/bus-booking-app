@@ -1,4 +1,6 @@
 import 'package:bus_booking_app/constants/constants.dart';
+import 'package:bus_booking_app/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -10,6 +12,9 @@ import 'theme/theme_manager.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Stripe.publishableKey = devPublishableKey;
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   runApp(const ProviderScope(child: MyApp()));
 }

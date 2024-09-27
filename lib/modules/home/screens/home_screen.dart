@@ -1,14 +1,31 @@
+import 'package:bus_booking_app/modules/home/logic/home_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../constants/constants.dart';
 import '../widgets/bus_card.dart';
 import '../widgets/dot_indicator.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  late final HomeNotifier homeNotifier = ref.read(homeProvider.notifier);
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await homeNotifier.getAllBuses();
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final homeState = ref.watch(homeProvider);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue[800],
@@ -150,17 +167,21 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: buses.length,
-                      itemBuilder: (context, index) {
-                        final bus = buses[index];
-                        return BusCard(
-                          bus: bus,
-                        );
-                      },
-                    ),
-                  ),
+                  homeState.isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : Expanded(
+                          child: ListView.builder(
+                            itemCount: homeState.buses.length,
+                            itemBuilder: (context, index) {
+                              final bus = homeState.buses[index];
+                              return BusCard(
+                                bus: bus,
+                              );
+                            },
+                          ),
+                        ),
                 ],
               ),
             ),

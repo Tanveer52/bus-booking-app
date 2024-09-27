@@ -1,83 +1,99 @@
-import 'dart:convert';
-
 class BusModel {
-  final String image;
-  final double price;
-  final String seats;
-  final String departureTime;
   final String date;
+  final List<SeatModel> bookedSlots;
+  final int createdAt;
+  final String price;
+  final String busName;
+  final String destination;
+  final String from;
+  final String id;
+  final String time;
+  final int totalSeats;
+  final String status;
+  final int updatedAt;
 
   BusModel({
-    required this.image,
-    required this.price,
-    required this.seats,
-    required this.departureTime,
     required this.date,
+    required this.bookedSlots,
+    required this.createdAt,
+    required this.price,
+    required this.busName,
+    required this.destination,
+    required this.from,
+    required this.id,
+    required this.time,
+    required this.totalSeats,
+    required this.status,
+    required this.updatedAt,
   });
 
-  BusModel copyWith({
-    String? image,
-    double? price,
-    String? seats,
-    String? departureTime,
-    String? date,
-  }) {
+  factory BusModel.fromJson(Map<String, dynamic> json) {
     return BusModel(
-      image: image ?? this.image,
-      price: price ?? this.price,
-      seats: seats ?? this.seats,
-      departureTime: departureTime ?? this.departureTime,
-      date: date ?? this.date,
+      date: json['date'],
+      bookedSlots: (json['bookedSlots'] as List<dynamic>)
+          .map((slot) => SeatModel.fromJson(slot))
+          .toList(),
+      createdAt: json['createdAt'],
+      price: json['price'],
+      busName: json['busName'],
+      destination: json['destination'],
+      from: json['from'],
+      id: json['id'],
+      time: json['time'],
+      totalSeats: json['totalSeats'],
+      status: json['status'],
+      updatedAt: json['updatedAt'],
     );
   }
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'image': image,
-      'price': price,
-      'seats': seats,
-      'departureTime': departureTime,
+  @override
+  String toString() {
+    return 'BusModel(date: $date, bookedSlots: $bookedSlots, createdAt: $createdAt, price: $price, busName: $busName, destination: $destination, from: $from, id: $id, time: $time, totalSeats: $totalSeats, status: $status, updatedAt: $updatedAt)';
+  }
+
+  static BusModel empty = BusModel(
+    date: '',
+    bookedSlots: [],
+    createdAt: 0,
+    price: '',
+    busName: '',
+    destination: '',
+    from: '',
+    id: '',
+    time: '',
+    totalSeats: 0,
+    status: '',
+    updatedAt: 0,
+  );
+}
+
+class SeatModel {
+  final String seat;
+  final String userId;
+  final String date;
+
+  SeatModel({
+    required this.seat,
+    required this.userId,
+    required this.date,
+  });
+
+  factory SeatModel.fromJson(Map<String, dynamic> json) {
+    return SeatModel(
+      seat: json['seat'],
+      userId: json['userId'],
+      date: json['date'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'seat': seat,
+      'userId': userId,
       'date': date,
     };
   }
 
-  factory BusModel.fromMap(Map<String, dynamic> map) {
-    return BusModel(
-      image: map['image'] as String,
-      price: map['price'] as double,
-      seats: map['seats'] as String,
-      departureTime: map['departureTime'] as String,
-      date: map['date'] as String,
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory BusModel.fromJson(String source) =>
-      BusModel.fromMap(json.decode(source) as Map<String, dynamic>);
-
   @override
-  String toString() {
-    return 'BusModel(image: $image, price: $price, seats: $seats, departureTime: $departureTime, date: $date)';
-  }
-
-  @override
-  bool operator ==(covariant BusModel other) {
-    if (identical(this, other)) return true;
-
-    return other.image == image &&
-        other.price == price &&
-        other.seats == seats &&
-        other.departureTime == departureTime &&
-        other.date == date;
-  }
-
-  @override
-  int get hashCode {
-    return image.hashCode ^
-        price.hashCode ^
-        seats.hashCode ^
-        departureTime.hashCode ^
-        date.hashCode;
-  }
+  String toString() => 'SeatModel(seat: $seat, userId: $userId, date: $date)';
 }

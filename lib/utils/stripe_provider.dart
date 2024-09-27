@@ -18,14 +18,14 @@ class StripeNotifier extends ChangeNotifier {
   String? get paymentIntentClientSecret => _paymentIntentClientSecret;
 
   // Method to start the payment process
-  Future<void> makePayment({required int amount}) async {
+  Future<bool> makePayment({required int amount}) async {
     try {
       _setLoading(true);
 
       _paymentIntentClientSecret = await _createPaymentIntent(amount, "usd");
       if (_paymentIntentClientSecret == null) {
         _setLoading(false);
-        return;
+        return false;
       }
 
       await Stripe.instance.initPaymentSheet(
@@ -34,12 +34,16 @@ class StripeNotifier extends ChangeNotifier {
           merchantDisplayName: "Tanveer Ahmad",
         ),
       );
-      await _processPayment();
+      final result = await _processPayment();
+
+      log('------------------------------------');
 
       _setLoading(false);
+      return result;
     } catch (e) {
       _setLoading(false);
       log(e.toString());
+      return false;
     }
   }
 
@@ -75,14 +79,18 @@ class StripeNotifier extends ChangeNotifier {
   }
 
   // Private method to process the payment
-  Future<void> _processPayment() async {
+  Future<bool> _processPayment() async {
     try {
-      await Stripe.instance.presentPaymentSheet();
-      await Stripe.instance.confirmPaymentSheetPayment();
+      await Stripe.instance.presentPaymentSheet().whenComplete(() {
+        _setLoading(false);
+        log('Payment Successfull');
+      });
+      return true;
     } catch (e) {
       log(e.toString());
+      _setLoading(false);
+      return false;
     }
-    _setLoading(false);
   }
 
   // Private method to calculate the amount in cents

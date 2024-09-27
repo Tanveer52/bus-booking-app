@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1027451800737",
+    "project_id": "seat-belt-bf5af",
+    "storage_bucket": "seat-belt-bf5af.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1027451800737:android:97cb2d6ee49924ea4674e0",
+        "android_client_info": {
+          "package_name": "com.example.bus_booking_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZbpDu35ykObSSnuLZ52UaAe6zsOznxIM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

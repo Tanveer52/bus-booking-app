@@ -17,7 +17,7 @@ class BusCard extends StatelessWidget {
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => SeatSelectionScreen(
-                  ticketPrice: bus.price,
+                  bus: bus,
                 )));
       },
       child: Container(
@@ -33,7 +33,8 @@ class BusCard extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: CachedNetworkImage(
-                  imageUrl: bus.image,
+                  imageUrl:
+                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpId-2bkjAQmP-pTAjsipLj_mAHkPNrDmtbg&s',
                   width: 100,
                   height: 80,
                   fit: BoxFit.cover,
@@ -51,7 +52,7 @@ class BusCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Ticket Price: \$${bus.price.toStringAsFixed(0)}',
+                      'Ticket Price: \$${bus.price}',
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
@@ -60,12 +61,12 @@ class BusCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Available Seats: ${bus.seats}',
+                      'Available Seats: ${bus.totalSeats}',
                       style: const TextStyle(color: Colors.black, fontSize: 15),
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Departure: ${bus.departureTime}',
+                      'Departure: ${bus.time}',
                       style: const TextStyle(color: Colors.black, fontSize: 15),
                     ),
                     const SizedBox(height: 4),
