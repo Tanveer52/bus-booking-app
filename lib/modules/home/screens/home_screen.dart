@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../constants/constants.dart';
-import 'widgets/bus_card.dart';
-import 'widgets/dot_indicator.dart';
+import '../widgets/bus_card.dart';
+import '../widgets/dot_indicator.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
